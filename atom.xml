@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Rails and Marketing]]></title>
+  <title><![CDATA[Ruby on Rails, Online Marketing and Data Science]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-09T18:36:12-05:00</updated>
+  <updated>2013-06-09T18:58:19-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
