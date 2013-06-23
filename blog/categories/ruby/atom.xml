@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-23T15:23:17-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using Ruby's Object#tap to easily seed your Rails project]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project/"/>
+    <updated>2013-04-26T13:38:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project</id>
+    <content type="html"><![CDATA[<p>I initially saw a fellow rails student using the tap method to seed their project, in a couple of lines of code.  It got me to take a second look at tap and to understand how it works. <!-- more --></p>
+
+<h3>What is tap?</h3>
+
+<p><strong>tap</strong> is allows you to chain method calls. It can pass an object into a block and after completion it returns the object.</p>
+
+<p><code>ruby
+user.tap
+  # do some stuff
+end # =&gt; user object
+</code>
+Tap will return the object thats its called on, regardless if the block returns another result. So with this we can start adding users and pass the <code>User.create</code> into a users array.  I&rsquo;ll be using the Faker gem to populate db attributes.</p>
+
+<p><code>ruby
+users = []
+(0..10).each do
+  users.tap {|ary| ary &lt;&lt; User.create(full_name: Faker::Name.name, email: Faker::Internet.email, password: 'password')}
+end
+</code>
+Now, this will create 11 sample users into your db.</p>
+]]></content>
+  </entry>
+  
+</feed>

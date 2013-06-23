@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Ruby on Rails, Online Marketing and Data Science]]></title>
+  <title><![CDATA[Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-09T19:30:40-05:00</updated>
+  <updated>2013-06-23T15:23:17-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Ruby's Object#tap to easily seed your Rails project]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project/"/>
+    <updated>2013-04-26T13:38:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project</id>
+    <content type="html"><![CDATA[<p>I initially saw a fellow rails student using the tap method to seed their project, in a couple of lines of code.  It got me to take a second look at tap and to understand how it works. <!-- more --></p>
+
+<h3>What is tap?</h3>
+
+<p><strong>tap</strong> is allows you to chain method calls. It can pass an object into a block and after completion it returns the object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">user</span><span class="o">.</span><span class="n">tap</span>
+</span><span class='line'>  <span class="c1"># do some stuff</span>
+</span><span class='line'><span class="k">end</span> <span class="c1"># =&gt; user object</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tap will return the object thats its called on, regardless if the block returns another result. So with this we can start adding users and pass the <code>User.create</code> into a users array.  I&rsquo;ll be using the Faker gem to populate db attributes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">users</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span><span class="o">|</span><span class="n">ary</span><span class="o">|</span> <span class="n">ary</span> <span class="o">&lt;&lt;</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">full_name</span><span class="p">:</span> <span class="ss">Faker</span><span class="p">:</span><span class="ss">:Name</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="ss">Faker</span><span class="p">:</span><span class="ss">:Internet</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">password</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span><span class="p">)}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, this will create 11 sample users into your db.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Intro]]></title>
