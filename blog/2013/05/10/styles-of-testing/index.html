@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Ruby on Rails, Online Marketing and Analytics</title>
+  <title>3 Styles of Testing - Ruby on Rails, Online Marketing and Analytics</title>
   <meta name="author" content="Robin Paul">
 
   
-  <meta name="description" content="Tweet Blog Archive 2013 Using Collection Routes for Search
-May 12 2013 posted in Routes Shoulda Matchers, FTW
-May 11 2013 posted in Testing 3 Styles &hellip;">
-  
+  <meta name="description" content="Tweet 3 Styles of Testing May 10th, 2013 The three tests that we&rsquo;ll focusing on for the next couple of months is Unit tests, Functional tests &hellip;">
+  <meta name="keywords" content="TDD, integration tests, feature tests, unit tests, functional tests">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -20,7 +18,7 @@ May 11 2013 posted in Testing 3 Styles &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://cachemoney.github.io/blog/archives/">
+  <link rel="canonical" href="http://cachemoney.github.io/blog/2013/05/10/styles-of-testing/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -111,119 +109,61 @@ May 11 2013 posted in Testing 3 Styles &hellip;">
 
   </header>
   <section id="main">
-    <div>
-<article role="article" class="post">
+    <article class="post">
+  <div class="sharing-box">
   
-    <div class="sharing-box">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/blog/archives/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/blog/archives/index.html" data-size="large">Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/blog/2013/05/10/styles-of-testing/" data-via="pobinraul" data-counturl="http://cachemoney.github.io/blog/2013/05/10/styles-of-testing/" data-size="large">Tweet</a>
   
   
   
 </div>
 
-  
   
   <header>
-    <h2 class="entry-title">Blog Archive</h2>
+    
+      <h2 class="entry-title">3 Styles of Testing</h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-10T13:38:00-05:00" pubdate data-updated="true">May 10<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<p>The three tests that we&rsquo;ll focusing on for the next couple of months is Unit tests, Functional tests, and Integration tests and how we&rsquo;ll using these in our App.</p>
 
-  
-  <h2>2013</h2>
+<h3>Unit Tests</h3>
 
-<article>
-  
-<h1><a href="/blog/2013/05/12/using-collection-routes-for-search/">Using Collection Routes for Search</a></h1>
-<time datetime="2013-05-12T14:24:00-05:00" pubdate><span class='month'>May</span> <span class='day'>12</span> <span class='year'>2013</span></time>
+<p>Unit tests are the closest to the implementation code. They cover testing of your models, views, helpers, and routes. They execute faster than the other test, and you are able to get more test coverage from them.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/routes/'>Routes</a></span>
-</footer>
+<h3>Functional Tests</h3>
+
+<p>These tests cover the controllers.  Controllers are the glue between views and models.  They can access multiple models and send that data to the views.  They are somewhere in the middle when it comes to execution speed and test coverage.</p>
+
+<h3>Integration Tests</h3>
+
+<p>This would cover real world scenarious.  They tend have more logic as your emulating how a real user interacts with an application. So, we&rsquo;ll be testing important/critical business processes.</p>
+
+<p>The bulk of our testing will be covering all models, controllers, important helpers.</p>
+
 
 
 </article>
 
-
-
-<article>
-  
-<h1><a href="/blog/2013/05/11/shoulda-matchers/">Shoulda Matchers, FTW</a></h1>
-<time datetime="2013-05-11T13:59:00-05:00" pubdate><span class='month'>May</span> <span class='day'>11</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/testing/'>Testing</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/05/10/styles-of-testing/">3 Styles of Testing</a></h1>
-<time datetime="2013-05-10T13:38:00-05:00" pubdate><span class='month'>May</span> <span class='day'>10</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/testing/'>Testing</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/05/09/overcoming-the-technical-debt-of-testing-with-tdd/">Overcoming the Technical Debt of Testing with TDD</a></h1>
-<time datetime="2013-05-09T12:54:00-05:00" pubdate><span class='month'>May</span> <span class='day'>09</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/testing/'>Testing</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/05/05/the-importance-of-testing/">The Importance of Testing</a></h1>
-<time datetime="2013-05-05T11:13:00-05:00" pubdate><span class='month'>May</span> <span class='day'>05</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/testing/'>Testing</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project/">Using Ruby&#8217;s Object#tap to easily seed your Rails project</a></h1>
-<time datetime="2013-04-26T13:38:00-05:00" pubdate><span class='month'>Apr</span> <span class='day'>26</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/ruby/'>Ruby</a></span>
-</footer>
-
-
-</article>
-
-</div>
-
-  
-</article>
-
-</div>
 
     <nav role="navigation" id="pagination">
 

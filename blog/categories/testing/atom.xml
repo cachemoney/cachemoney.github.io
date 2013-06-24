@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Testing | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/testing/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-24T14:35:30-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Shoulda Matchers, FTW]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/11/shoulda-matchers/"/>
+    <updated>2013-05-11T13:59:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/11/shoulda-matchers</id>
+    <content type="html"><![CDATA[<p>The <a href="https://github.com/thoughtbot/shoulda-matchers">Shoulda Matchers gem</a> from Thoughtbot make it very easy to create matchers for ActiveRecord and ActiveModel. In one line of code I am able to test validations and associations with ease.</p>
+
+<p><code>ruby
+describe User do
+  it { should validate_uniqueness_of(:email) }
+  it { should have_many(:reviews).order("created_at DESC") }
+  it { should validate_presence_of(:email) }
+end
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[3 Styles of Testing]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/10/styles-of-testing/"/>
+    <updated>2013-05-10T13:38:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/10/styles-of-testing</id>
+    <content type="html"><![CDATA[<p>The three tests that we&rsquo;ll focusing on for the next couple of months is Unit tests, Functional tests, and Integration tests and how we&rsquo;ll using these in our App.</p>
+
+<h3>Unit Tests</h3>
+
+<p>Unit tests are the closest to the implementation code. They cover testing of your models, views, helpers, and routes. They execute faster than the other test, and you are able to get more test coverage from them.</p>
+
+<h3>Functional Tests</h3>
+
+<p>These tests cover the controllers.  Controllers are the glue between views and models.  They can access multiple models and send that data to the views.  They are somewhere in the middle when it comes to execution speed and test coverage.</p>
+
+<h3>Integration Tests</h3>
+
+<p>This would cover real world scenarious.  They tend have more logic as your emulating how a real user interacts with an application. So, we&rsquo;ll be testing important/critical business processes.</p>
+
+<p>The bulk of our testing will be covering all models, controllers, important helpers.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Overcoming the Technical Debt of Testing with TDD]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/09/overcoming-the-technical-debt-of-testing-with-tdd/"/>
+    <updated>2013-05-09T12:54:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/09/overcoming-the-technical-debt-of-testing-with-tdd</id>
+    <content type="html"><![CDATA[<p>This is an interesting topic as we&rsquo;re covering TDD early in this course.  As your adding more features to your product and doing it quickly, as shipping new features to customers is what every organization strives for, its very easy to neglect testing. Re-testing features can stress out QA, and then for a developer to stop working on the next feature, they would have to write unit tests for the feature that they just released. This technical debt of writing tests after you&rsquo;ve finished coding can burden multiple business groups. <!-- more --></p>
+
+<p>TDD, is the agile way to overcome this technical debt.  Red-Green-Refactor is a method in which you write a failing test, and then writing implementation code to make the test pass. Once all tests are passing, then you work on refactoring your test code and/or implementation code.</p>
+
+<p>TDD provides some of the following benefits:</p>
+
+<ol>
+<li>Find out early if your code is going to introduce bugs</li>
+<li>Improved code quality
+
+<ol>
+<li>more maintainable.</li>
+<li>Focusing on specific features &ndash; less likely to going sideways</li>
+<li>Modules are less likely coupled with other parts of the code</li>
+</ol>
+</li>
+<li>it documents the functionality of the code.  Anybody reading the test code, can easily figure out what and how the code works.</li>
+<li>promotes group ownership – the team collectively owns the code and verify it as part of a build.</li>
+</ol>
+
+
+<p>I still learning more and more about TDD, and a question I&rsquo;ve been asking myself, &ldquo;how long should I spend on TDD&rdquo;.  I don&rsquo;t know the answer to this, and the best answers I could find points to: &ldquo;It depends.&rdquo;  I have been reading <a href="https://leanpub.com/everydayrailsrspec">Everyday Testing with Rails</a> and this <a href="http://mikehadlow.blogspot.com/2011/06/i-dont-have-time-for-unit-tests.html">post</a> by Mike Hadlow helped answer some other questions.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Importance of Testing]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/05/the-importance-of-testing/"/>
+    <updated>2013-05-05T11:13:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/05/the-importance-of-testing</id>
+    <content type="html"><![CDATA[<h3>Why have automated testing?</h3>
+
+<ol>
+<li>Not having tests</li>
+<li>Having a QA Team</li>
+<li>Effect on Development</li>
+</ol>
+
+
+<p> <!-- more --></p>
+
+<p>Not having any tests, means your customers are doing your testing for you. I am all too familiar with this process. I worked at this one e-tailer that constantly pushed untested code into production. It was a customer service nightmare.  Who knows how much money is lost by those who just bounce the second they encounter a bug.  It would make any CEO cringe to.</p>
+
+<p>Having a dedicated QA team can be helpful for pushing bug free code into production, but this is typically done in mature companies with an established product.  In a startup, where running in a lean
+environment, and your bootstrapped, QA roles are unfortunately rolled into the dev team.</p>
+
+<p>It can be a challenge when developers are required to write their own tests.  As a result, code quality can become an issue, as developers can be throwing tests in the last minute so that they can check-off testing. Often times, a developer can own a certain feature in a project, where they become the expert on that subject matter, creating a knowledge gap with other team members.  This can introduce new problems such as: &ldquo;How do we know if this feature works?&rdquo; or &ldquo;Did anything else break?&rdquo;</p>
+
+<h4>How do we fix this?</h4>
+
+<p>Through regression testing</p>
+
+<p><img class="center <a" src="href="https://s3-us-west-2.amazonaws.com/blog-assets-cache/images/test-in-production.jpg">https://s3-us-west-2.amazonaws.com/blog-assets-cache/images/test-in-production.jpg</a>" title="&lsquo;most interesting man&rsquo; &lsquo;images&rsquo;" ></p>
+]]></content>
+  </entry>
+  
+</feed>

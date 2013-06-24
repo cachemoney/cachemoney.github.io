@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Routes | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/routes/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-24T14:35:30-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using Collection Routes for Search]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/12/using-collection-routes-for-search/"/>
+    <updated>2013-05-12T14:24:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/12/using-collection-routes-for-search</id>
+    <content type="html"><![CDATA[<p>In this part, we&rsquo;re covering the differences between a collection route and a member route.  The main difference is that a collection route acts on collection of objects, where as a member route acts on a single object.</p>
+
+<p>To implement search for our videos model, we want to display a collection of video objects.</p>
+
+<p>```ruby
+resources :videos, only: [:show] do
+  collection do</p>
+
+<pre><code>post :search, to: "videos#search"
+</code></pre>
+
+<p>  end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>
