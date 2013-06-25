@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-24T14:42:15-05:00</updated>
+  <updated>2013-06-24T20:49:24-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,163 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Writing Feature Specs with Capybara]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/27/writing-feature-specs-with-capybara/"/>
+    <updated>2013-05-27T20:30:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/27/writing-feature-specs-with-capybara</id>
+    <content type="html"><![CDATA[<h3>Testing an app, like how a real user would use it.</h3>
+
+<p>It&rsquo;s interesting that even though the terminology changes slightly, Feature and Scenario, its analagous to &ldquo;Describe&rdquo; and &ldquo;It&rdquo; in our rspec unit tests.  Capybara also introduces an easy to understand syntax like &ldquo;click_link, fill_in and visit to issue real life user actions.</p>
+
+<!-- more -->
+
+
+<p>After installing the capybara gem and adding <code>require 'capybara/rspec'</code> to spec_helper.rb</p>
+
+<p>```ruby
+feature &lsquo;user signs in&rsquo; do
+  background do</p>
+
+<pre><code>User.create(full_name: "Jon Doe", email: "jon@example.com", password: "password")
+</code></pre>
+
+<p>  end
+  scenario &lsquo;with existing username&rsquo; do</p>
+
+<pre><code>visit sign_in_path
+fill_in "email", with: "jon@example.com"
+fill_in "password", with: "password"
+click_button  "Sign in"
+page.should have_content "Welcome, Jon Doe"
+</code></pre>
+
+<p>  end</p>
+
+<p>  scenario &lsquo;with non-existant username&rsquo; do</p>
+
+<pre><code>visit sign_in_path
+fill_in "email", with: "jon_jones@example.com"
+fill_in "password", with: "password"
+click_button  "Sign in"
+page.should have_content "Invalid Email or Password"
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Shared Examples equals Shared Bliss]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/24/shared-examples-equals-shared-bliss/"/>
+    <updated>2013-05-24T20:16:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/24/shared-examples-equals-shared-bliss</id>
+    <content type="html"><![CDATA[<p>Another examle of DRY'ing up our controller specs is using shared_examples.</p>
+
+<p>```ruby
+shared_examples &ldquo;require_sign_in&rdquo; do
+  it &ldquo;redirects to the sign_in_path&rdquo; do</p>
+
+<pre><code>clear_current_user
+action
+expect(response).to redirect_to sign_in_path
+</code></pre>
+
+<p>  end
+end
+<code>
+It is basically another way to wrap test code and allows you to call it via:
+</code>ruby
+describe &ldquo;Invite Friends&rdquo; do
+  it_behaves_like &ldquo;require_sign_in&rdquo;
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Macros in Rspec]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/20/using-macros-in-rspec/"/>
+    <updated>2013-05-20T20:06:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/20/using-macros-in-rspec</id>
+    <content type="html"><![CDATA[<p>A much welcomed lesson in writing macros to simplify all our testing was much appreciative.  A lot of our feature tests include authenticating users.  These macros can be used across all controller tests, whenver a require_user is a business requirement.</p>
+
+<p>```ruby
+def set_current_user(user=nil)
+  session[:user_id] = (user || Fabricate(:user).id)
+end</p>
+
+<p>def set_current_admin(admin=nil)
+  session[:user_id] = (admin || Fabricate(:admin).id)
+end</p>
+
+<p>def current_user
+  User.find(session[:user_id])
+end</p>
+
+<p>def clear_current_user
+  session[:user_id] = nil
+end</p>
+
+<p>def sign_in(a_user=nil)
+  user = a_user || Fabricate(:user)
+  visit sign_in_path
+  fill_in &ldquo;email&rdquo;, with: user.email
+  fill_in &ldquo;password&rdquo;, with: user.password
+  click_button  &ldquo;Sign in&rdquo;
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Basics in Testing Controllers]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers/"/>
+    <updated>2013-05-17T18:07:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers</id>
+    <content type="html"><![CDATA[<p>One principle that I&rsquo;ve been reading on Rails development, is keeping your controllers &lsquo;skinny&rsquo; and the models &ldquo;fat&rdquo;.  It feels like perhaps, you can be a little &lsquo;lax on testing controllers.  I quickly found out that controllers can be complex as they can access various models, do some processing and then send that info into the view. They are also coupled to your routes, so theres another thing to consider. <!-- more --></p>
+
+<p>Controller specs consist of using an HTTP method (post, get, put &hellip; etc) and some test data to pass into the HTTP verb.  For this project, I&rsquo;ve used the <a href="http://www.fabricationgem.org/">Fabricator</a> gem, which makes creating test objects easy peasy.
+<code>ruby
+alice = Fabricator(:user)
+monk = Fabricator.attributes_for(:video)
+</code>
+The latter, doesnt create an object in the DB, but fabricates model&rsquo;s attributes which is stored in a hash.</p>
+
+<p>The typical tests that I&rsquo;ve been doing for my &lsquo;GET/POST actions&rsquo; in controllers is to test functionality for &ldquo;valid&rdquo; and &ldquo;invalid&rdquo; data.  Is the instance variable being correnctly? the correct template being rendered, and if there is a redirect upon completion, what that would be?</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>describe &ldquo;GET new&rdquo; do&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>it "assign new user to @user " do
+</span><span class='line'>  get :new
+</span><span class='line'>  expect(assigns(:user)).to be_instance_of(User)
+</span><span class='line'>end
+</span><span class='line'>it "should render new template" do
+</span><span class='line'>  get :new
+</span><span class='line'>  expect(response).to render_template :new
+</span><span class='line'>end
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>  end</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Shoulda Matchers, FTW]]></title>
@@ -27,90 +184,6 @@ describe User do
   it { should validate_presence_of(:email) }
 end
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[3 Styles of Testing]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/05/10/styles-of-testing/"/>
-    <updated>2013-05-10T13:38:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/05/10/styles-of-testing</id>
-    <content type="html"><![CDATA[<p>The three tests that we&rsquo;ll focusing on for the next couple of months is Unit tests, Functional tests, and Integration tests and how we&rsquo;ll using these in our App.</p>
-
-<h3>Unit Tests</h3>
-
-<p>Unit tests are the closest to the implementation code. They cover testing of your models, views, helpers, and routes. They execute faster than the other test, and you are able to get more test coverage from them.</p>
-
-<h3>Functional Tests</h3>
-
-<p>These tests cover the controllers.  Controllers are the glue between views and models.  They can access multiple models and send that data to the views.  They are somewhere in the middle when it comes to execution speed and test coverage.</p>
-
-<h3>Integration Tests</h3>
-
-<p>This would cover real world scenarious.  They tend have more logic as your emulating how a real user interacts with an application. So, we&rsquo;ll be testing important/critical business processes.</p>
-
-<p>The bulk of our testing will be covering all models, controllers, important helpers.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Overcoming the Technical Debt of Testing with TDD]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/05/09/overcoming-the-technical-debt-of-testing-with-tdd/"/>
-    <updated>2013-05-09T12:54:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/05/09/overcoming-the-technical-debt-of-testing-with-tdd</id>
-    <content type="html"><![CDATA[<p>This is an interesting topic as we&rsquo;re covering TDD early in this course.  As your adding more features to your product and doing it quickly, as shipping new features to customers is what every organization strives for, its very easy to neglect testing. Re-testing features can stress out QA, and then for a developer to stop working on the next feature, they would have to write unit tests for the feature that they just released. This technical debt of writing tests after you&rsquo;ve finished coding can burden multiple business groups. <!-- more --></p>
-
-<p>TDD, is the agile way to overcome this technical debt.  Red-Green-Refactor is a method in which you write a failing test, and then writing implementation code to make the test pass. Once all tests are passing, then you work on refactoring your test code and/or implementation code.</p>
-
-<p>TDD provides some of the following benefits:</p>
-
-<ol>
-<li>Find out early if your code is going to introduce bugs</li>
-<li>Improved code quality
-
-<ol>
-<li>more maintainable.</li>
-<li>Focusing on specific features &ndash; less likely to going sideways</li>
-<li>Modules are less likely coupled with other parts of the code</li>
-</ol>
-</li>
-<li>it documents the functionality of the code.  Anybody reading the test code, can easily figure out what and how the code works.</li>
-<li>promotes group ownership – the team collectively owns the code and verify it as part of a build.</li>
-</ol>
-
-
-<p>I still learning more and more about TDD, and a question I&rsquo;ve been asking myself, &ldquo;how long should I spend on TDD&rdquo;.  I don&rsquo;t know the answer to this, and the best answers I could find points to: &ldquo;It depends.&rdquo;  I have been reading <a href="https://leanpub.com/everydayrailsrspec">Everyday Testing with Rails</a> and this <a href="http://mikehadlow.blogspot.com/2011/06/i-dont-have-time-for-unit-tests.html">post</a> by Mike Hadlow helped answer some other questions.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Importance of Testing]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/05/05/the-importance-of-testing/"/>
-    <updated>2013-05-05T11:13:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/05/05/the-importance-of-testing</id>
-    <content type="html"><![CDATA[<h3>Why have automated testing?</h3>
-
-<ol>
-<li>Not having tests</li>
-<li>Having a QA Team</li>
-<li>Effect on Development</li>
-</ol>
-
-
-<p> <!-- more --></p>
-
-<p>Not having any tests, means your customers are doing your testing for you. I am all too familiar with this process. I worked at this one e-tailer that constantly pushed untested code into production. It was a customer service nightmare.  Who knows how much money is lost by those who just bounce the second they encounter a bug.  It would make any CEO cringe to.</p>
-
-<p>Having a dedicated QA team can be helpful for pushing bug free code into production, but this is typically done in mature companies with an established product.  In a startup, where running in a lean
-environment, and your bootstrapped, QA roles are unfortunately rolled into the dev team.</p>
-
-<p>It can be a challenge when developers are required to write their own tests.  As a result, code quality can become an issue, as developers can be throwing tests in the last minute so that they can check-off testing. Often times, a developer can own a certain feature in a project, where they become the expert on that subject matter, creating a knowledge gap with other team members.  This can introduce new problems such as: &ldquo;How do we know if this feature works?&rdquo; or &ldquo;Did anything else break?&rdquo;</p>
-
-<h4>How do we fix this?</h4>
-
-<p>Through regression testing</p>
-
-<p><img class="center <a" src="href="https://s3-us-west-2.amazonaws.com/blog-assets-cache/images/test-in-production.jpg">https://s3-us-west-2.amazonaws.com/blog-assets-cache/images/test-in-production.jpg</a>" title="&lsquo;most interesting man&rsquo; &lsquo;images&rsquo;" ></p>
 ]]></content>
   </entry>
   

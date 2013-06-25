@@ -4,7 +4,7 @@
   <title><![CDATA[Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-24T14:42:15-05:00</updated>
+  <updated>2013-06-24T20:49:24-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,206 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Writing Feature Specs with Capybara]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/27/writing-feature-specs-with-capybara/"/>
+    <updated>2013-05-27T20:30:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/27/writing-feature-specs-with-capybara</id>
+    <content type="html"><![CDATA[<h3>Testing an app, like how a real user would use it.</h3>
+
+<p>It&rsquo;s interesting that even though the terminology changes slightly, Feature and Scenario, its analagous to &ldquo;Describe&rdquo; and &ldquo;It&rdquo; in our rspec unit tests.  Capybara also introduces an easy to understand syntax like &ldquo;click_link, fill_in and visit to issue real life user actions.</p>
+
+<!-- more -->
+
+
+<p>After installing the capybara gem and adding <code>require 'capybara/rspec'</code> to spec_helper.rb</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">feature</span> <span class="s1">&#39;user signs in&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">background</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">full_name</span><span class="p">:</span> <span class="s2">&quot;Jon Doe&quot;</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="s2">&quot;jon@example.com&quot;</span><span class="p">,</span> <span class="ss">password</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">scenario</span> <span class="s1">&#39;with existing username&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">visit</span> <span class="n">sign_in_path</span>
+</span><span class='line'>    <span class="n">fill_in</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="s2">&quot;jon@example.com&quot;</span>
+</span><span class='line'>    <span class="n">fill_in</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span>
+</span><span class='line'>    <span class="n">click_button</span>  <span class="s2">&quot;Sign in&quot;</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span> <span class="s2">&quot;Welcome, Jon Doe&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">scenario</span> <span class="s1">&#39;with non-existant username&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">visit</span> <span class="n">sign_in_path</span>
+</span><span class='line'>    <span class="n">fill_in</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="s2">&quot;jon_jones@example.com&quot;</span>
+</span><span class='line'>    <span class="n">fill_in</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span>
+</span><span class='line'>    <span class="n">click_button</span>  <span class="s2">&quot;Sign in&quot;</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span> <span class="s2">&quot;Invalid Email or Password&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Shared Examples equals Shared Bliss]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/24/shared-examples-equals-shared-bliss/"/>
+    <updated>2013-05-24T20:16:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/24/shared-examples-equals-shared-bliss</id>
+    <content type="html"><![CDATA[<p>Another examle of DRY&#8217;ing up our controller specs is using shared_examples.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">shared_examples</span> <span class="s2">&quot;require_sign_in&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;redirects to the sign_in_path&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">clear_current_user</span>
+</span><span class='line'>    <span class="n">action</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">redirect_to</span> <span class="n">sign_in_path</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It is basically another way to wrap test code and allows you to call it via:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s2">&quot;Invite Friends&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s2">&quot;require_sign_in&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Macros in Rspec]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/20/using-macros-in-rspec/"/>
+    <updated>2013-05-20T20:06:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/20/using-macros-in-rspec</id>
+    <content type="html"><![CDATA[<p>A much welcomed lesson in writing macros to simplify all our testing was much appreciative.  A lot of our feature tests include authenticating users.  These macros can be used across all controller tests, whenver a require_user is a business requirement.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">set_current_user</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">user</span> <span class="o">||</span> <span class="no">Fabricate</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">set_current_admin</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">admin</span> <span class="o">||</span> <span class="no">Fabricate</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>  <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">clear_current_user</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">sign_in</span><span class="p">(</span><span class="n">a_user</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="n">a_user</span> <span class="o">||</span> <span class="no">Fabricate</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">visit</span> <span class="n">sign_in_path</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span>
+</span><span class='line'>  <span class="n">click_button</span>  <span class="s2">&quot;Sign in&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Basics in Testing Controllers]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers/"/>
+    <updated>2013-05-17T18:07:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers</id>
+    <content type="html"><![CDATA[<p>One principle that I&rsquo;ve been reading on Rails development, is keeping your controllers &lsquo;skinny&rsquo; and the models &ldquo;fat&rdquo;.  It feels like perhaps, you can be a little &lsquo;lax on testing controllers.  I quickly found out that controllers can be complex as they can access various models, do some processing and then send that info into the view. They are also coupled to your routes, so theres another thing to consider. <!-- more --></p>
+
+<p>Controller specs consist of using an HTTP method (post, get, put &hellip; etc) and some test data to pass into the HTTP verb.  For this project, I&rsquo;ve used the <a href="http://www.fabricationgem.org/">Fabricator</a> gem, which makes creating test objects easy peasy.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">alice</span> <span class="o">=</span> <span class="no">Fabricator</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span><span class='line'><span class="n">monk</span> <span class="o">=</span> <span class="no">Fabricator</span><span class="o">.</span><span class="n">attributes_for</span><span class="p">(</span><span class="ss">:video</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The latter, doesnt create an object in the DB, but fabricates model&rsquo;s attributes which is stored in a hash.</p>
+
+<p>The typical tests that I&rsquo;ve been doing for my &lsquo;GET/POST actions&rsquo; in controllers is to test functionality for &ldquo;valid&rdquo; and &ldquo;invalid&rdquo; data.  Is the instance variable being correnctly? the correct template being rendered, and if there is a redirect upon completion, what that would be?</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>describe "GET new" do
+</span><span class='line'>    it "assign new user to @user " do
+</span><span class='line'>      get :new
+</span><span class='line'>      expect(assigns(:user)).to be_instance_of(User)
+</span><span class='line'>    end
+</span><span class='line'>    it "should render new template" do
+</span><span class='line'>      get :new
+</span><span class='line'>      expect(response).to render_template :new
+</span><span class='line'>    end
+</span><span class='line'>  end</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Collection Routes for Search]]></title>

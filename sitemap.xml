@@ -29,16 +29,36 @@
         <lastmod>2013-06-24T14:30:32-05:00</lastmod>
     </url>
     <url>
+        <loc>http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers/</loc>
+        <lastmod>2013-06-24T20:09:56-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://cachemoney.github.io/blog/2013/05/20/using-macros-in-rspec/</loc>
+        <lastmod>2013-06-24T20:15:28-05:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://cachemoney.github.io/blog/2013/05/24/shared-examples-equals-shared-bliss/
+        </loc>
+        <lastmod>2013-06-24T20:24:30-05:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://cachemoney.github.io/blog/2013/05/27/writing-feature-specs-with-capybara/
+        </loc>
+        <lastmod>2013-06-24T20:47:52-05:00</lastmod>
+    </url>
+    <url>
         <loc>http://cachemoney.github.io/about/</loc>
         <lastmod>2013-06-24T14:41:44-05:00</lastmod>
     </url>
     <url>
         <loc>http://cachemoney.github.io/blog/archives/</loc>
-        <lastmod>2013-06-24T14:30:32-05:00</lastmod>
+        <lastmod>2013-06-24T20:47:52-05:00</lastmod>
     </url>
     <url>
         <loc>http://cachemoney.github.io/</loc>
-        <lastmod>2013-06-24T14:30:32-05:00</lastmod>
+        <lastmod>2013-06-24T20:47:52-05:00</lastmod>
     </url>
     <url>
         <loc>http://cachemoney.github.io/robots.txt</loc>

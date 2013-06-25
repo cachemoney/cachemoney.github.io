@@ -9,7 +9,7 @@
   <meta name="author" content="Robin Paul">
 
   
-  <meta name="description" content="Tweet Using Collection Routes for Search May 12th, 2013 In this part, we&rsquo;re covering the differences between a collection route and a member &hellip;">
+  <meta name="description" content="Tweet Writing Feature Specs With Capybara May 27th, 2013 Testing an app, like how a real user would use it. It&rsquo;s interesting that even though &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +110,285 @@
   </header>
   <section id="main">
       
+  
+  
+    <article class="post">
+      <div class="sharing-box">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/index.html" data-size="large">Tweet</a>
+  
+  
+  
+</div>
+
+      
+  <header>
+    
+      <h2 class="entry-title">
+        
+        <a href="/blog/2013/05/27/writing-feature-specs-with-capybara/">Writing Feature Specs With Capybara</a>
+        
+      </h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-27T20:30:00-05:00" pubdate data-updated="true">May 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <h3>Testing an app, like how a real user would use it.</h3>
+
+<p>It&rsquo;s interesting that even though the terminology changes slightly, Feature and Scenario, its analagous to &ldquo;Describe&rdquo; and &ldquo;It&rdquo; in our rspec unit tests.  Capybara also introduces an easy to understand syntax like &ldquo;click_link, fill_in and visit to issue real life user actions.</p>
+
+
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/27/writing-feature-specs-with-capybara/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="post">
+      <div class="sharing-box">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/index.html" data-size="large">Tweet</a>
+  
+  
+  
+</div>
+
+      
+  <header>
+    
+      <h2 class="entry-title">
+        
+        <a href="/blog/2013/05/24/shared-examples-equals-shared-bliss/">Shared Examples Equals Shared Bliss</a>
+        
+      </h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-24T20:16:00-05:00" pubdate data-updated="true">May 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <p>Another examle of DRY&#8217;ing up our controller specs is using shared_examples.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">shared_examples</span> <span class="s2">&quot;require_sign_in&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;redirects to the sign_in_path&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">clear_current_user</span>
+</span><span class='line'>    <span class="n">action</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">redirect_to</span> <span class="n">sign_in_path</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It is basically another way to wrap test code and allows you to call it via:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s2">&quot;Invite Friends&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s2">&quot;require_sign_in&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+  
+  
+
+
+    </article>
+  
+  
+    <article class="post">
+      <div class="sharing-box">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/index.html" data-size="large">Tweet</a>
+  
+  
+  
+</div>
+
+      
+  <header>
+    
+      <h2 class="entry-title">
+        
+        <a href="/blog/2013/05/20/using-macros-in-rspec/">Using Macros in Rspec</a>
+        
+      </h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-20T20:06:00-05:00" pubdate data-updated="true">May 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <p>A much welcomed lesson in writing macros to simplify all our testing was much appreciative.  A lot of our feature tests include authenticating users.  These macros can be used across all controller tests, whenver a require_user is a business requirement.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">set_current_user</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">user</span> <span class="o">||</span> <span class="no">Fabricate</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">set_current_admin</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">admin</span> <span class="o">||</span> <span class="no">Fabricate</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">current_user</span>
+</span><span class='line'>  <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">clear_current_user</span>
+</span><span class='line'>  <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">sign_in</span><span class="p">(</span><span class="n">a_user</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="n">a_user</span> <span class="o">||</span> <span class="no">Fabricate</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">visit</span> <span class="n">sign_in_path</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span>
+</span><span class='line'>  <span class="n">click_button</span>  <span class="s2">&quot;Sign in&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+  
+  
+
+
+    </article>
+  
+  
+    <article class="post">
+      <div class="sharing-box">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/index.html" data-size="large">Tweet</a>
+  
+  
+  
+</div>
+
+      
+  <header>
+    
+      <h2 class="entry-title">
+        
+        <a href="/blog/2013/05/17/basics-in-testing-controllers/">Basics in Testing Controllers</a>
+        
+      </h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-17T18:07:00-05:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <p>One principle that I&rsquo;ve been reading on Rails development, is keeping your controllers &lsquo;skinny&rsquo; and the models &ldquo;fat&rdquo;.  It feels like perhaps, you can be a little &lsquo;lax on testing controllers.  I quickly found out that controllers can be complex as they can access various models, do some processing and then send that info into the view. They are also coupled to your routes, so theres another thing to consider. 
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/17/basics-in-testing-controllers/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="post">
