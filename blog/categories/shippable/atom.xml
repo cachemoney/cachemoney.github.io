@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Shippable | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/shippable/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-25T23:51:18-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Creating Friendships with Self Referential Associations]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/31/friendships-with-self-referential-associations/"/>
+    <updated>2013-05-31T23:47:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/31/friendships-with-self-referential-associations</id>
+    <content type="html"><![CDATA[<p>Now, we&rsquo;re allowing users of myFlix to create &lsquo;friendships&rsquo; by following other users.  Self joins will allow us to do this with out the need to create extraneous tables.</p>
+
+<p>```ruby
+class User &lt; ActiveRecord::Base
+  validates_presence_of :email, :password, :full_name
+  validates_uniqueness_of :email</p>
+
+<p>  has_secure_password
+  has_many :following_relationships, class_name: &ldquo;Relationship&rdquo;, foreign_key: :follower_id
+  has_many  :leading_relationships, class_name: &ldquo;Relationship&rdquo;, foreign_key: :leader_id</p>
+
+<p>class Relationship &lt; ActiveRecord::Base
+  #join table to associate friends to a user
+  belongs_to :follower, class_name: &ldquo;User&rdquo;
+  belongs_to :leader, class_name: &ldquo;User&rdquo;
+end<br/>
+<code>``
+You can access a users followers with</code>@user.following_relationships<code>or they are following with</code>@user.leading_relationships`</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-24T20:53:09-05:00</updated>
+  <updated>2013-06-25T23:51:18-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,245 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Show Me the Money with Stripe Payment Processing Integration]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration/"/>
+    <updated>2013-06-24T23:56:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Serving Static Assets with on S3 with CarrierWave]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave/"/>
+    <updated>2013-06-16T23:55:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Unicorn on Heroku to Improve Concurrency]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/15/using-unicorn-on-heroku-to-improve-concurrency/"/>
+    <updated>2013-06-15T23:53:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/15/using-unicorn-on-heroku-to-improve-concurrency</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Background Jobs with Sidekiq and Redis]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis/"/>
+    <updated>2013-06-13T23:53:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Simplifying Models with Concerns]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns/"/>
+    <updated>2013-06-06T23:50:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tokens to Anonymize Your Data]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/02/tokens-to-anonymize-your-data/"/>
+    <updated>2013-06-02T23:49:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/02/tokens-to-anonymize-your-data</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ActionMailer in Rail: Communicating with Users]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/01/actionmailer-in-rail-communicating-with-users/"/>
+    <updated>2013-06-01T23:49:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/01/actionmailer-in-rail-communicating-with-users</id>
+    <content type="html"><![CDATA[<p>After doing email marketing for several years, and building a building out a strategy for revenue from scratch, learning ActionMailer was really exciting.</p>
+
+<!-- more -->
+
+
+<p>I was very surprised on how easy it is to implement and testing is just as easy with</p>
+
+<p>You setup your Mailer routines in app\mailers</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AppMailer</span> <span class="o">&lt;</span> <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">welcome_email</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>    <span class="vi">@url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:3000/sign_in&#39;</span>
+</span><span class='line'>    <span class="n">email_with_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+</span><span class='line'>    <span class="n">mail</span><span class="p">(</span><span class="ss">to</span><span class="p">:</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">from</span><span class="p">:</span> <span class="s1">&#39;info@myflix.com&#39;</span> <span class="p">,</span> <span class="ss">subject</span><span class="p">:</span> <span class="s2">&quot;Welcome to My Awesome Site&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">password_reset</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>    <span class="n">mail</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">:subject</span> <span class="o">=&gt;</span> <span class="s2">&quot;Password Reset&quot;</span><span class="p">,</span> <span class="ss">from</span><span class="p">:</span> <span class="s2">&quot;info@myflix.com&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create your message in your views template</p>
+
+<figure class='code'><figcaption><span>views / app_mailer / welcome_email.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;!</span><span class="no">DOCTYPE</span> <span class="n">html</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">meta</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;text/html; charset=UTF-8&quot;</span> <span class="n">http</span><span class="o">-</span><span class="n">equiv</span><span class="o">=</span><span class="s2">&quot;Content-Type&quot;</span> <span class="sr">/&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Welcome</span> <span class="n">to</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">,</span> <span class="o">&lt;</span><span class="sx">%= @user.full_name %&gt;&lt;/h1&gt;</span>
+</span><span class='line'><span class="sx">    &lt;p&gt;</span>
+</span><span class='line'><span class="sx">      You have successfully signed up to example.com,</span>
+</span><span class='line'><span class="sx">      your username is: &lt;%=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span> <span class="sx">%&gt;.&lt;br/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="sr">    &lt;p&gt;</span>
+</span><span class='line'><span class="sr">      To login to the site, just follow this link: &lt;%= @url %&gt;.</span>
+</span><span class='line'><span class="sr">    &lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Thanks</span> <span class="k">for</span> <span class="n">joining</span> <span class="ow">and</span> <span class="n">have</span> <span class="n">a</span> <span class="n">great</span> <span class="n">day!</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Testing is pretty straight forward, the only thing is to do is clear ActionMailer deliveries queue after each test.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s2">&quot;POST create&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">context</span> <span class="s2">&quot;email sending&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">let!</span><span class="p">(</span><span class="ss">:alice</span><span class="p">)</span>  <span class="p">{</span><span class="no">Fabricate</span><span class="o">.</span><span class="n">attributes_for</span><span class="p">(</span><span class="ss">:user</span><span class="p">)}</span>
+</span><span class='line'>      <span class="n">before</span> <span class="p">{</span><span class="n">post</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="n">alice</span><span class="p">}</span>
+</span><span class='line'>      <span class="n">after</span> <span class="p">{</span> <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span><span class="o">.</span><span class="n">deliveries</span><span class="o">.</span><span class="n">clear</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;sends out the email&quot;</span> <span class="k">do</span>
+</span><span class='line'>        <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span><span class="o">.</span><span class="n">deliveries</span><span class="o">.</span><span class="n">should_not</span> <span class="n">be_empty</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;sends to the right receipient&quot;</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">message</span> <span class="o">=</span> <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span><span class="o">.</span><span class="n">deliveries</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'>        <span class="n">message</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="o">[</span><span class="n">alice</span><span class="o">[</span><span class="s2">&quot;email&quot;</span><span class="o">]]</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="n">it</span> <span class="s2">&quot;has the right content&quot;</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">message</span> <span class="o">=</span> <span class="ss">ActionMailer</span><span class="p">:</span><span class="ss">:Base</span><span class="o">.</span><span class="n">deliveries</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'>        <span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span><span class="p">(</span><span class="s1">&#39;You have successfully signed up to example.com&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Creating Friendships with Self Referential Associations]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/31/friendships-with-self-referential-associations/"/>
+    <updated>2013-05-31T23:47:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/31/friendships-with-self-referential-associations</id>
+    <content type="html"><![CDATA[<p>Now, we&rsquo;re allowing users of myFlix to create &lsquo;friendships&rsquo; by following other users.  Self joins will allow us to do this with out the need to create extraneous tables.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">validates_presence_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:full_name</span>
+</span><span class='line'>  <span class="n">validates_uniqueness_of</span> <span class="ss">:email</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_secure_password</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:following_relationships</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="n">foreign_key</span><span class="p">:</span> <span class="ss">:follower_id</span>
+</span><span class='line'>  <span class="n">has_many</span>  <span class="ss">:leading_relationships</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="n">foreign_key</span><span class="p">:</span> <span class="ss">:leader_id</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Relationship</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="c1">#join table to associate friends to a user</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:follower</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="s2">&quot;User&quot;</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:leader</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="s2">&quot;User&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can access a users followers with <code>@user.following_relationships</code> or they are following with <code>@user.leading_relationships</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[3 Styles of BDD with Rails]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/29/3-styles-of-bdd-with-rails/"/>
+    <updated>2013-05-29T23:43:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/29/3-styles-of-bdd-with-rails</id>
+    <content type="html"><![CDATA[<p>So far, we&rsquo;ve been writing feature tests with capybara to test a particular business process which touches multiple controllers, models and views.  There are certain styles of approaching Behavioral Driven Design, a) Outside &ndash; In (ABDD), b) Inside &ndash; Out, and c) Meet in the Middle.</p>
+
+<!-- more -->
+
+
+<p>The approach that we&rsquo;re following is Meet in the middle.  With this flavor, we start with html mockups and then we start replacing placeholder data with logic.  Controller tests will then verify our view/controller interactions, followed by model tests and then finally the feature/integration specs will test out the workflow.</p>
+
+<p>Its interesting to hear about the Outside-In approach, or Acceptance BDD, as your start with the integration tests, then controller tests, followed by model tests.  When I started reading about Rails development over a year ago and doing numerous tutorials on the web, I would always run across blog posts about Cucumber testing, and it seemed everyone out there had an opinion on it. &ldquo;Is Cucumber and BDD the Holy Grail&rdquo; or &ldquo;Who wants to write a parser to parse your Cucumber specs?&rdquo;  This seems to be one of the biggest hurdles with this approach to BDD. Theres a big learning curve in this as you have to write an integration test right off the bat.</p>
+
+<p>The last approach to BDD, Inside-Out, seems to be the easiest to implement as your start writing model tests right away.  But the one thing you have to watch out, is that when you start moving on to your controller tests, you could have easily made some wrong assumptions about how a model behaves and then have to revisit the code afterwards.  This can cascade up as you approach your feature tests and then coming back to re-working your models.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Writing Feature Specs with Capybara]]></title>

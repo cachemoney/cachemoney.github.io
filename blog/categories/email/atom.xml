@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Email, | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/email/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-25T23:51:18-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ActionMailer in Rail: Communicating with Users]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/01/actionmailer-in-rail-communicating-with-users/"/>
+    <updated>2013-06-01T23:49:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/01/actionmailer-in-rail-communicating-with-users</id>
+    <content type="html"><![CDATA[<p>After doing email marketing for several years, and building a building out a strategy for revenue from scratch, learning ActionMailer was really exciting.</p>
+
+<!-- more -->
+
+
+<p>I was very surprised on how easy it is to implement and testing is just as easy with</p>
+
+<p>You setup your Mailer routines in app\mailers
+```ruby
+class AppMailer &lt; ActionMailer::Base
+  def welcome_email(user)</p>
+
+<pre><code>@user = user
+@url = 'http://localhost:3000/sign_in'
+email_with_name = "#{@user.full_name} &lt;#{@user.email}&gt;"
+mail(to: @user.email, from: 'info@myflix.com' , subject: "Welcome to My Awesome Site")
+</code></pre>
+
+<p>  end</p>
+
+<p>  def password_reset(user)</p>
+
+<pre><code>@user = user
+mail :to =&gt; @user.email, :subject =&gt; "Password Reset", from: "info@myflix.com"
+</code></pre>
+
+<p>  end
+end
+<code>
+Create your message in your views template
+</code>ruby views / app_mailer / welcome_email.html.erb
+&lt;!DOCTYPE html>
+<html>
+  <head></p>
+
+<pre><code>&lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;
+</code></pre>
+
+<p>  </head>
+  <body></p>
+
+<pre><code>&lt;h1&gt;Welcome to example.com, &lt;%= @user.full_name %&gt;&lt;/h1&gt;
+&lt;p&gt;
+  You have successfully signed up to example.com,
+  your username is: &lt;%= @user.email %&gt;.&lt;br/&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  To login to the site, just follow this link: &lt;%= @url %&gt;.
+&lt;/p&gt;
+&lt;p&gt;Thanks for joining and have a great day!&lt;/p&gt;
+</code></pre>
+
+<p>  </body>
+</html>
+<code>
+Testing is pretty straight forward, the only thing is to do is clear ActionMailer deliveries queue after each test.
+</code>ruby
+describe &ldquo;POST create&rdquo; do
+  context &ldquo;email sending&rdquo; do</p>
+
+<pre><code>  let!(:alice)  {Fabricate.attributes_for(:user)}
+  before {post :create, user: alice}
+  after { ActionMailer::Base.deliveries.clear }      
+
+  it "sends out the email" do
+    ActionMailer::Base.deliveries.should_not be_empty
+  end
+  it "sends to the right receipient" do
+    message = ActionMailer::Base.deliveries.last
+    message.to.should == [alice["email"]]
+  end
+  it "has the right content" do
+    message = ActionMailer::Base.deliveries.last
+    message.body.should include('You have successfully signed up to example.com')
+  end
+end
+</code></pre>
+
+<p>end  <br/>
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

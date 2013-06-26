@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-24T20:53:09-05:00</updated>
+  <updated>2013-06-25T23:51:18-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,112 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ActionMailer in Rail: Communicating with Users]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/01/actionmailer-in-rail-communicating-with-users/"/>
+    <updated>2013-06-01T23:49:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/01/actionmailer-in-rail-communicating-with-users</id>
+    <content type="html"><![CDATA[<p>After doing email marketing for several years, and building a building out a strategy for revenue from scratch, learning ActionMailer was really exciting.</p>
+
+<!-- more -->
+
+
+<p>I was very surprised on how easy it is to implement and testing is just as easy with</p>
+
+<p>You setup your Mailer routines in app\mailers
+```ruby
+class AppMailer &lt; ActionMailer::Base
+  def welcome_email(user)</p>
+
+<pre><code>@user = user
+@url = 'http://localhost:3000/sign_in'
+email_with_name = "#{@user.full_name} &lt;#{@user.email}&gt;"
+mail(to: @user.email, from: 'info@myflix.com' , subject: "Welcome to My Awesome Site")
+</code></pre>
+
+<p>  end</p>
+
+<p>  def password_reset(user)</p>
+
+<pre><code>@user = user
+mail :to =&gt; @user.email, :subject =&gt; "Password Reset", from: "info@myflix.com"
+</code></pre>
+
+<p>  end
+end
+<code>
+Create your message in your views template
+</code>ruby views / app_mailer / welcome_email.html.erb
+&lt;!DOCTYPE html>
+<html>
+  <head></p>
+
+<pre><code>&lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;
+</code></pre>
+
+<p>  </head>
+  <body></p>
+
+<pre><code>&lt;h1&gt;Welcome to example.com, &lt;%= @user.full_name %&gt;&lt;/h1&gt;
+&lt;p&gt;
+  You have successfully signed up to example.com,
+  your username is: &lt;%= @user.email %&gt;.&lt;br/&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  To login to the site, just follow this link: &lt;%= @url %&gt;.
+&lt;/p&gt;
+&lt;p&gt;Thanks for joining and have a great day!&lt;/p&gt;
+</code></pre>
+
+<p>  </body>
+</html>
+<code>
+Testing is pretty straight forward, the only thing is to do is clear ActionMailer deliveries queue after each test.
+</code>ruby
+describe &ldquo;POST create&rdquo; do
+  context &ldquo;email sending&rdquo; do</p>
+
+<pre><code>  let!(:alice)  {Fabricate.attributes_for(:user)}
+  before {post :create, user: alice}
+  after { ActionMailer::Base.deliveries.clear }      
+
+  it "sends out the email" do
+    ActionMailer::Base.deliveries.should_not be_empty
+  end
+  it "sends to the right receipient" do
+    message = ActionMailer::Base.deliveries.last
+    message.to.should == [alice["email"]]
+  end
+  it "has the right content" do
+    message = ActionMailer::Base.deliveries.last
+    message.body.should include('You have successfully signed up to example.com')
+  end
+end
+</code></pre>
+
+<p>end  <br/>
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[3 Styles of BDD with Rails]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/05/29/3-styles-of-bdd-with-rails/"/>
+    <updated>2013-05-29T23:43:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/05/29/3-styles-of-bdd-with-rails</id>
+    <content type="html"><![CDATA[<p>So far, we&rsquo;ve been writing feature tests with capybara to test a particular business process which touches multiple controllers, models and views.  There are certain styles of approaching Behavioral Driven Design, a) Outside &ndash; In (ABDD), b) Inside &ndash; Out, and c) Meet in the Middle.</p>
+
+<!-- more -->
+
+
+<p>The approach that we&rsquo;re following is Meet in the middle.  With this flavor, we start with html mockups and then we start replacing placeholder data with logic.  Controller tests will then verify our view/controller interactions, followed by model tests and then finally the feature/integration specs will test out the workflow.</p>
+
+<p>Its interesting to hear about the Outside-In approach, or Acceptance BDD, as your start with the integration tests, then controller tests, followed by model tests.  When I started reading about Rails development over a year ago and doing numerous tutorials on the web, I would always run across blog posts about Cucumber testing, and it seemed everyone out there had an opinion on it. &ldquo;Is Cucumber and BDD the Holy Grail&rdquo; or &ldquo;Who wants to write a parser to parse your Cucumber specs?&rdquo;  This seems to be one of the biggest hurdles with this approach to BDD. Theres a big learning curve in this as you have to write an integration test right off the bat.</p>
+
+<p>The last approach to BDD, Inside-Out, seems to be the easiest to implement as your start writing model tests right away.  But the one thing you have to watch out, is that when you start moving on to your controller tests, you could have easily made some wrong assumptions about how a model behaves and then have to revisit the code afterwards.  This can cascade up as you approach your feature tests and then coming back to re-working your models.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Writing Feature Specs with Capybara]]></title>
@@ -122,68 +228,6 @@ end</p>
   click_button  &ldquo;Sign in&rdquo;
 end
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Basics in Testing Controllers]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers/"/>
-    <updated>2013-05-17T18:07:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/05/17/basics-in-testing-controllers</id>
-    <content type="html"><![CDATA[<p>One principle that I&rsquo;ve been reading on Rails development, is keeping your controllers &lsquo;skinny&rsquo; and the models &ldquo;fat&rdquo;.  It feels like perhaps, you can be a little &lsquo;lax on testing controllers.  I quickly found out that controllers can be complex as they can access various models, do some processing and then send that info into the view. They are also coupled to your routes, so theres another thing to consider. <!-- more --></p>
-
-<p>Controller specs consist of using an HTTP method (post, get, put &hellip; etc) and some test data to pass into the HTTP verb.  For this project, I&rsquo;ve used the <a href="http://www.fabricationgem.org/">Fabricator</a> gem, which makes creating test objects easy peasy.
-<code>ruby
-alice = Fabricator(:user)
-monk = Fabricator.attributes_for(:video)
-</code>
-The latter, doesnt create an object in the DB, but fabricates model&rsquo;s attributes which is stored in a hash.</p>
-
-<p>The typical tests that I&rsquo;ve been doing for my &lsquo;GET/POST actions&rsquo; in controllers is to test functionality for &ldquo;valid&rdquo; and &ldquo;invalid&rdquo; data.  Is the instance variable being correnctly? the correct template being rendered, and if there is a redirect upon completion, what that would be?</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>describe &ldquo;GET new&rdquo; do&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>it "assign new user to @user " do
-</span><span class='line'>  get :new
-</span><span class='line'>  expect(assigns(:user)).to be_instance_of(User)
-</span><span class='line'>end
-</span><span class='line'>it "should render new template" do
-</span><span class='line'>  get :new
-</span><span class='line'>  expect(response).to render_template :new
-</span><span class='line'>end
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  end</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Shoulda Matchers, FTW]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/05/11/shoulda-matchers/"/>
-    <updated>2013-05-11T13:59:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/05/11/shoulda-matchers</id>
-    <content type="html"><![CDATA[<p>The <a href="https://github.com/thoughtbot/shoulda-matchers">Shoulda Matchers gem</a> from Thoughtbot make it very easy to create matchers for ActiveRecord and ActiveModel. In one line of code I am able to test validations and associations with ease.</p>
-
-<p><code>ruby
-describe User do
-  it { should validate_uniqueness_of(:email) }
-  it { should have_many(:reviews).order("created_at DESC") }
-  it { should validate_presence_of(:email) }
-end
-</code></p>
 ]]></content>
   </entry>
   
