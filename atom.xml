@@ -4,7 +4,7 @@
   <title><![CDATA[Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-25T23:55:52-05:00</updated>
+  <updated>2013-06-26T10:50:10-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,209 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Show Me the Money with Stripe Payment Processing Integration]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration/"/>
+    <updated>2013-06-24T23:56:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Serving Static Assets with on S3 with CarrierWave]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave/"/>
+    <updated>2013-06-16T23:55:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Unicorn on Heroku to Improve Concurrency]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/15/using-unicorn-on-heroku-to-improve-concurrency/"/>
+    <updated>2013-06-15T23:53:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/15/using-unicorn-on-heroku-to-improve-concurrency</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Background Jobs with Sidekiq and Redis]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis/"/>
+    <updated>2013-06-13T23:53:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Simplifying Models with Concerns]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns/"/>
+    <updated>2013-06-06T23:50:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tokens to Anonymize Your Data]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/02/tokens-to-anonymize-your-data/"/>
+    <updated>2013-06-02T23:49:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/02/tokens-to-anonymize-your-data</id>
+    <content type="html"><![CDATA[<p>The next feature in our app is being able to invite a friend using ActionMailer with a tracking link, so if they signup via that link, each of you will become friends, oh and do it the TDD way, including feature specs.</p>
+
+<!--more -->
+
+
+<p>This involves creating an invitation&rsquo;s table to store the user_id, invitee&rsquo;s email address and full name,(this way, I can pre-populate the registration form making it easier to sign-up), and a tracking token.
+In the Invite model, I create the token</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">InvitesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_filter</span> <span class="ss">:require_user</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="vi">@invite</span> <span class="o">=</span> <span class="no">Invite</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">inviter</span><span class="p">:</span> <span class="n">current_user</span><span class="p">,</span>
+</span><span class='line'>                        <span class="n">invitee_email</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:invites</span><span class="o">][</span><span class="ss">:invitee_email</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                        <span class="n">full_name</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:invites</span><span class="o">][</span><span class="ss">:full_name</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@invite_message</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:invites</span><span class="o">][</span><span class="ss">:message</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@invite</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>      <span class="no">AppMailer</span><span class="o">.</span><span class="n">invite_email</span><span class="p">(</span><span class="vi">@invite</span><span class="p">,</span> <span class="vi">@invite_message</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">flash</span><span class="o">[</span><span class="ss">:success</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;You have notified </span><span class="si">#{</span><span class="vi">@invite</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2"> to join MyFlix&quot;</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">new_invite_path</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">render</span>  <span class="ss">:new</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the mailer, i build out the custom link with the invite token. Using a custom route: <code>get 'register/:token', to: "users#new_with_invitation_token", as: 'register_with_token'</code> I can process the user registration in its own controller action.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">new_with_invitation_token</span>
+</span><span class='line'>    <span class="n">invitation</span> <span class="o">=</span> <span class="no">Invite</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">token</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:token</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">invitation</span>
+</span><span class='line'>      <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="n">invitation</span><span class="o">.</span><span class="n">invitee_email</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@invite_token</span> <span class="o">=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">token</span>
+</span><span class='line'>      <span class="n">render</span> <span class="ss">:new</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">invalid_token_path</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="sb">```</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">  With this private method, upon registration, I create the friend relationships with each other.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ruby
+  def handle_invitation
+  if params[:invite_token].present?</p>
+
+<pre><code>invitation = Invite.where(token: params[:invite_token]).first
+@user.follow(invitation.inviter)
+invitation.inviter.follow(@user)
+invitation.update_column(:token, nil)
+</code></pre>
+
+<p>  end     <br/>
+end
+&#8220;`
+Feature tests to test friendships and emails being sent out.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>feature "User invites friend to join" do
+</span><span class='line'>  scenario "invites friend to create an account" do
+</span><span class='line'>
+</span><span class='line'>    alice = Fabricate(:user)
+</span><span class='line'>    bob = Fabricate.attributes_for(:user)
+</span><span class='line'>    sign_in(alice)
+</span><span class='line'>    clear_emails
+</span><span class='line'>    visit new_invite_path
+</span><span class='line'>    fill_in  "invites[full_name]", with: bob[:full_name]
+</span><span class='line'>    fill_in "invites[invitee_email]", with: bob[:email]
+</span><span class='line'>    click_button "Send Invitation"
+</span><span class='line'>    open_email(bob[:email])
+</span><span class='line'>    current_email.body.should have_content("Please, join this really cool site")
+</span><span class='line'>    current_email.click_link 'Register'
+</span><span class='line'>    find_field('user[email]').value.should eq bob[:email]
+</span><span class='line'>    fill_in "user[password]", with: bob[:password]
+</span><span class='line'>    fill_in "user_full_name", with: bob[:full_name]
+</span><span class='line'>    click_button "Sign Up"
+</span><span class='line'>    page.should have_content("You are Signed in and email sent")
+</span><span class='line'>    # Check Friendships for inviter
+</span><span class='line'>    visit people_path
+</span><span class='line'>    page.should have_link(alice.full_name)
+</span><span class='line'>    # Check Friendship for invitee
+</span><span class='line'>    visit sign_out_path
+</span><span class='line'>    sign_in(alice)
+</span><span class='line'>    visit people_path
+</span><span class='line'>    page.should have_link(bob[:full_name])
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ActionMailer in Rails: Communicating with Users]]></title>
@@ -137,6 +340,8 @@
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>In development, I set up a spare gmail account to send out email notifications and on production, I am using Mailgun, where you can send 200/emails/day for free.  To keep my api keys private, I followed the example outlined by Daniel on using a <a href="http://railsapps.github.io/rails-environment-variables.html">local_congig.yml</a>. Just remember to add it to your <code>.gitignore</code> file so it&rsquo;s not checked into your repo.</p>
 ]]></content>
   </entry>
   

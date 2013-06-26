@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-25T23:55:52-05:00</updated>
+  <updated>2013-06-26T10:57:38-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -97,7 +97,8 @@ end
 </code></pre>
 
 <p>end  <br/>
-```</p>
+<code>``
+In development, I set up a spare gmail account to send out email notifications and on production, I am using Mailgun, where you can send 200/emails/day for free.  To keep my api keys private, I followed the example outlined by Daniel on using a [local_congig.yml](http://railsapps.github.io/rails-environment-variables.html). Just remember to add it to your</code>.gitignore` file so it&rsquo;s not checked into your repo.</p>
 ]]></content>
   </entry>
   
