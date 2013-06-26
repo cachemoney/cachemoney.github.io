@@ -189,9 +189,10 @@ In the Invite model, I create the token</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In the mailer, i build out the custom link with the invite token. Using a custom route: <code>get 'register/:token', to: "users#new_with_invitation_token", as: 'register_with_token'</code> I can process the user registration in its own controller action.</p>
+<p>In the mailer, i build out the custom link with the invite token. Using a custom route:
+get &lsquo;register/:token&rsquo;, to: &ldquo;users#new_with_invitation_token&rdquo;, as: &lsquo;register_with_token&rsquo; I can process the user registration in its own controller action.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -201,39 +202,39 @@ In the Invite model, I create the token</p>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">new_with_invitation_token</span>
-</span><span class='line'>    <span class="n">invitation</span> <span class="o">=</span> <span class="no">Invite</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">token</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:token</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">invitation</span>
-</span><span class='line'>      <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="n">invitation</span><span class="o">.</span><span class="n">invitee_email</span><span class="p">)</span>
-</span><span class='line'>      <span class="vi">@invite_token</span> <span class="o">=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">token</span>
-</span><span class='line'>      <span class="n">render</span> <span class="ss">:new</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">invalid_token_path</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="sb">```</span>
-</span><span class='line'>
-</span><span class='line'><span class="sb">  With this private method, upon registration, I create the friend relationships with each other.</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def new_with_invitation_token
+</span><span class='line'>    invitation = Invite.where(token: params[:token]).first
+</span><span class='line'>    if invitation
+</span><span class='line'>      @user = User.new(email: invitation.invitee_email)
+</span><span class='line'>      @invite_token = invitation.token
+</span><span class='line'>      render :new
+</span><span class='line'>    else
+</span><span class='line'>      redirect_to invalid_token_path
+</span><span class='line'>    end
+</span><span class='line'>  end</span></code></pre></td></tr></table></div></figure>
 
 
-<p>ruby
-  def handle_invitation
-  if params[:invite_token].present?</p>
+<p>  With this private method, upon registration, I create the friend relationships with each other.</p>
 
-<pre><code>invitation = Invite.where(token: params[:invite_token]).first
-@user.follow(invitation.inviter)
-invitation.inviter.follow(@user)
-invitation.update_column(:token, nil)
-</code></pre>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def handle_invitation
+</span><span class='line'>  if params[:invite_token].present?
+</span><span class='line'>    invitation = Invite.where(token: params[:invite_token]).first
+</span><span class='line'>    @user.follow(invitation.inviter)
+</span><span class='line'>    invitation.inviter.follow(@user)
+</span><span class='line'>    invitation.update_column(:token, nil)
+</span><span class='line'>  end       
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
-<p>  end     <br/>
-end
-&#8220;`
-Feature tests to test friendships and emails being sent out.</p>
+
+<p>Feature tests to test friendships and emails being sent out.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Concerns | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/concerns/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-26T12:28:27-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Simplifying Models with Concerns]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns/"/>
+    <updated>2013-06-06T23:50:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns</id>
+    <content type="html"><![CDATA[<p>In the effort for simplifying the complexity of models, we can abstract methods in from a model that can be shared across all other models.  In the foreseeable future, its makes sense to remove the token logic out of the invites module, and put it into an ActiveSupport::Concern</p>
+
+<!--more-->
+
+
+<p>We can easily add a &ldquo;Tokennable&rdquo; attribute to any module now. Users, reviews, can be easily tokenized. First we can put our token logic in a concern:</p>
+
+<p>```ruby tokenable.rb
+module Tokenable
+  extend ActiveSupport::Concern</p>
+
+<p>  included do</p>
+
+<pre><code>before_create :generate_token
+</code></pre>
+
+<p>  end</p>
+
+<p>  private</p>
+
+<p>  def generate_token</p>
+
+<pre><code>self.token = SecureRandom.urlsafe_base64  
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>We have make sure that the lib directory is loaded when rails starts up:
+config.autoload_paths &lt;&lt; &ldquo;#{Rails.root}/lib&rdquo;</p>
+
+<p>If I put <code>include Tokenable</code> into a model, then I have effectively given that model the ability to generate a token upon the creation of it.</p>
+
+<p>Reference: <a href="https://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns">https://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns</a></p>
+]]></content>
+  </entry>
+  
+</feed>
