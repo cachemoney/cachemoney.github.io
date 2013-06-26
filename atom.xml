@@ -4,7 +4,7 @@
   <title><![CDATA[Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-06-25T23:51:18-05:00</updated>
+  <updated>2013-06-25T23:54:45-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,60 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Show Me the Money with Stripe Payment Processing Integration]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration/"/>
-    <updated>2013-06-24T23:56:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Serving Static Assets with on S3 with CarrierWave]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave/"/>
-    <updated>2013-06-16T23:55:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using Unicorn on Heroku to Improve Concurrency]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/06/15/using-unicorn-on-heroku-to-improve-concurrency/"/>
-    <updated>2013-06-15T23:53:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/06/15/using-unicorn-on-heroku-to-improve-concurrency</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Background Jobs with Sidekiq and Redis]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis/"/>
-    <updated>2013-06-13T23:53:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Simplifying Models with Concerns]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns/"/>
-    <updated>2013-06-06T23:50:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/06/06/simplifying-models-with-concerns</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Tokens to Anonymize Your Data]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/06/02/tokens-to-anonymize-your-data/"/>
-    <updated>2013-06-02T23:49:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/06/02/tokens-to-anonymize-your-data</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[ActionMailer in Rail: Communicating with Users]]></title>
