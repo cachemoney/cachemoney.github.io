@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Assets | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/assets/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-28T11:48:20-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Serving Static Assets with on S3 with CarrierWave]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave/"/>
+    <updated>2013-06-16T23:55:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/16/serving-static-assets-with-on-s3-with-carrierwave</id>
+    <content type="html"><![CDATA[<p>The next action-packed feature I&rsquo;m adding to myFlix is file upload processing.  With Carrierwave its fairly easy to configure your app to use it.</p>
+
+<!-- more -->
+
+
+<p>You create an Uploader class where your define your storage directory, and whitelisting file types with:</p>
+
+<p>```ruby
+def extension_white_list</p>
+
+<pre><code>%w(jpg jpeg gif png)
+</code></pre>
+
+<p>  end
+```
+With this, I can limit movie poster image files to be of that file type.  You then mount an attribute from the uploader class in an ActiveRecord Model.</p>
+
+<p><code>ruby
+class Video &lt; ActiveRecord::Base
+  belongs_to  :category
+  has_many  :reviews, order: "created_at DESC"
+  mount_uploader :large_cover_url, LargeCoverUploader
+  mount_uploader :small_cover_url, SmallCoverUploader
+end
+</code>
+It does have integration with RMagick and MiniMagik, which can help in image processing, I could probably suffice with requiring only one file upload and then resize the image to create a thumbnail.</p>
+
+<p>Carrierwave makes it very easy to integrate with a cloud provider such as AWS and Rackspace. With the Fog gem, a simple configuration option allows you to set your S3 API keys and static assets could be served from an S3 bucket.</p>
+
+<p>References:</p>
+
+<ol>
+<li><a href="https://github.com/carrierwaveuploader/carrierwave">https://github.com/carrierwaveuploader/carrierwave</a></li>
+<li><a href="https://github.com/fog/fog">https://github.com/fog/fog</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

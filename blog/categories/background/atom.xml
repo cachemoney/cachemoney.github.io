@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Background | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/background/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-06-28T11:48:20-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Background Jobs with Sidekiq and Redis]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis/"/>
+    <updated>2013-06-13T23:53:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/13/background-jobs-with-sidekiq-and-redis</id>
+    <content type="html"><![CDATA[<p>One thing I noticed is after completing the new user registration form or the Invite a Friend form, there would be a time where the application just sits there(usually less than 2 seconds) before it redirects to the success view.  This is happening because
+ActionMailer is dispatching an email to the Mail Deliveries queue, and in my development environment, connecting to GMail.</p>
+
+<!-- more -->
+
+
+<p>Here is where a background scheduler can handle that process allowing the application to be ready for the user instantly.  I&rsquo;ll be using Sidekiq to handle the scheduling.  Sidekiq uses another database server, Redis, to store these jobs.  I will use the delayed extension of sidekiq to make the apps mailing features to behave asynchrously.</p>
+
+<p>I&rsquo;m excited to use redis, as its always being mentioned on HackerNews and developers are coming up with new applications with it.  Installing and using redis on Heroku is easy as well. There is an 1-click addon called, RedisToGo.</p>
+
+<p>Reference Material:</p>
+
+<ol>
+<li><a href="https://www.pushlayer.com/blog/2013/03/11/how-we-use-sidekiq-and-redis-for-massively-concurrent-workers">https://www.pushlayer.com/blog/2013/03/11/how-we-use-sidekiq-and-redis-for-massively-concurrent-workers</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
