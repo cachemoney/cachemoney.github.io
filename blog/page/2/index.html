@@ -9,7 +9,11 @@
   <meta name="author" content="Robin Paul">
 
   
-  <meta name="description" content="Tweet Using Macros in Rspec May 20th, 2013 A much welcomed lesson in writing macros to simplify all our testing was much appreciative. A lot of our &hellip;">
+  <meta name="description" content="Tweet Shared Examples Equals Shared Bliss May 24th, 2013 Another examle of DRY&#8217;ing up our controller specs is using shared_examples. 1
+2
+3
+4
+5 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +114,82 @@
   </header>
   <section id="main">
       
+  
+  
+    <article class="post">
+      <div class="sharing-box">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/blog/page/2/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/blog/page/2/index.html" data-size="large">Tweet</a>
+  
+  
+  
+</div>
+
+      
+  <header>
+    
+      <h2 class="entry-title">
+        
+        <a href="/blog/2013/05/24/shared-examples-equals-shared-bliss/">Shared Examples Equals Shared Bliss</a>
+        
+      </h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-24T20:16:00-05:00" pubdate data-updated="true">May 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <p>Another examle of DRY&#8217;ing up our controller specs is using shared_examples.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">shared_examples</span> <span class="s2">&quot;require_sign_in&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;redirects to the sign_in_path&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">clear_current_user</span>
+</span><span class='line'>    <span class="n">action</span>
+</span><span class='line'>    <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">redirect_to</span> <span class="n">sign_in_path</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It is basically another way to wrap test code and allows you to call it via:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="s2">&quot;Invite Friends&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it_behaves_like</span> <span class="s2">&quot;require_sign_in&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+  
+  
+
+
+    </article>
   
   
     <article class="post">

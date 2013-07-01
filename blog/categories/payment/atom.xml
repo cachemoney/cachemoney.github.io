@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Payment | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/payment/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-07-01T00:59:23-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Show Me the Money with Stripe Payment Processing Integration]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration/"/>
+    <updated>2013-06-24T23:56:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/06/24/show-me-the-money-with-stripe-payment-processing-integration</id>
+    <content type="html"><![CDATA[<p>Processing payments, is probably one of the most important functions that any app can have.  Luckily with Stripe, their API is extremely easy to use. In order to be PCI compliant, stripe.js handles sending sensitive fincancial information to Stripe&rsquo;s server from your form.</p>
+
+<p>Once Stripe sends the credit card data to their servers they send back an authorization token.<br/>
+```ruby
+Stripe::Token.create(</p>
+
+<pre><code>:card =&gt; {
+:number =&gt; "4242424242424242",
+:exp_month =&gt; 7,
+:exp_year =&gt; 2014,
+:cvc =&gt; 314
+</code></pre>
+
+<p>  },
+)</p>
+
+<p>token = params[:stripeToken]</p>
+
+<p>begin
+  charge = Stripe::Charge.create(</p>
+
+<pre><code>:amount =&gt; 1000,
+:currency =&gt; "usd",
+:card =&gt; token,
+:description =&gt; "robin@example.com"
+</code></pre>
+
+<p>  )
+rescue Stripe::CardError => e
+  # The card has been declined
+end
+<code>
+Lets say we want to write a wrapper around this Stripe's API. You can hardcode values based on business rules. i.e currency: usd, or amount: 999
+</code>ruby
+module StripeWrapper
+  class Charge</p>
+
+<pre><code>attr_reader :response, :status
+
+def initialize(response, status)
+  @response = response
+  @status = status
+end
+
+def self.create(options={})
+  begin
+    response = Stripe::Charge.create(amount: options[:amount], currency: 'usd', card: options[:card])
+    new( response, :success)
+  rescue Stripe::CardError =&gt; e
+    new(e, :error)
+  end
+end
+
+def success?
+  status == :success
+end
+
+def error_message
+  response.message
+end
+</code></pre>
+
+<p>  end
+end
+```
+References:</p>
+
+<p>1) <a href="https://stripe.com/docs">https://stripe.com/docs</a></p>
+]]></content>
+  </entry>
+  
+</feed>
