@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Refactor | Ruby on Rails, Online Marketing and Analytics]]></title>
+  <link href="http://cachemoney.github.io/blog/categories/refactor/atom.xml" rel="self"/>
+  <link href="http://cachemoney.github.io/"/>
+  <updated>2013-07-02T22:08:21-05:00</updated>
+  <id>http://cachemoney.github.io/</id>
+  <author>
+    <name><![CDATA[Robin Paul]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring to Simplify Domain Models]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/07/02/refactoring-to-simplify-domain-models/"/>
+    <updated>2013-07-02T22:02:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/07/02/refactoring-to-simplify-domain-models</id>
+    <content type="html"><![CDATA[<h3>Policy Objects</h3>
+
+<p>Policy Objects can be used to encapsulate a business rule which involves more complex read operations.  For the myFlix app, I can add logic that can group Users into certain roles(or policies) and gran them access to certain features in the app.  For example, those who have paid or those who have signed-up x years ago can be placed in special groups.</p>
+
+<p>```ruby
+class ActiveUserPolicy
+  def initialize(user)</p>
+
+<pre><code>@user = user
+</code></pre>
+
+<p>  end</p>
+
+<p>  def premium?</p>
+
+<pre><code>@user.created_at &gt; 2.years.ago
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>Domain Objects</h3>
+
+<p>Domain Objects are objects for domain models. But sometimes, we don&rsquo;t have models that map to a database table.  Lets say for example, we were storing a credit balance in the user&rsquo;s table. There could be logic in an app that needs to update this balance, but in order to do that you always have to reference the @user to get the balance and the reference the @user again to save the balance.  You can abstract this &ldquo;Credit&rdquo; into its own domain object class, so that it can be used elsewhere and also make it easier to test.  To test Credit domain object a user, you don&rsquo;t have to worry about doing post/get actions to a controller, you can test the model separately.</p>
+
+<h3>Service Objects</h3>
+
+<p>Abstracting code from models or controllers to Service Objects is another way to refactor code in an application. In myFlix, I will refractor the User Signup process into an service object, that handles , charging the customer using my 1) custom Stripe API wrapper, 2) Saving the User to the database, 3) deploy welcome emails and 4) creating friendship creations if an invitation token is present. This can simplify the controller tests, as user registration unit tests can be targeted to the service object now.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/services/user_registration.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserRegistration</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:user</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:token</span><span class="p">,</span> <span class="ss">:invite_token</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def initialize(user, token, invite_token)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vi">@token</span> <span class="o">=</span> <span class="n">token</span>
+</span><span class='line'><span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'><span class="vi">@invite_token</span> <span class="o">=</span> <span class="n">invite_token</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def charge_card&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="ss">StripeWrapper</span><span class="p">:</span><span class="ss">:Charge</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">amount</span><span class="p">:</span> <span class="mi">999</span><span class="p">,</span> <span class="ss">currency</span><span class="p">:</span> <span class="s1">&#39;usd&#39;</span><span class="p">,</span> <span class="ss">card</span><span class="p">:</span> <span class="vi">@token</span><span class="p">,</span> <span class="ss">description</span><span class="p">:</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def register_user&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vi">@user</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'><span class="n">handle_invitation</span> <span class="k">if</span> <span class="vi">@invite_token</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'><span class="no">AppMailer</span><span class="o">.</span><span class="n">delay</span><span class="o">.</span><span class="n">welcome_email</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  private&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">handle_invitation</span>
+</span><span class='line'>  <span class="n">invitation</span> <span class="o">=</span> <span class="no">Invite</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">token</span><span class="p">:</span> <span class="vi">@invite_token</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="vi">@user</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="n">invitation</span><span class="o">.</span><span class="n">inviter</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">invitation</span><span class="o">.</span><span class="n">inviter</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">invitation</span><span class="o">.</span><span class="n">update_column</span><span class="p">(</span><span class="ss">:token</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Reference:</p>
+
+<p>1)  <a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/">http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/</a></p>
+
+<p>2)  <a href="http://blog.steveklabnik.com/posts/2011-09-06-the-secret-to-rails-oo-design">http://blog.steveklabnik.com/posts/2011-09-06-the-secret-to-rails-oo-design</a></p>
+]]></content>
+  </entry>
+  
+</feed>
