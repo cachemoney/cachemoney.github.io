@@ -4,7 +4,7 @@
   <title><![CDATA[Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-07-02T22:08:21-05:00</updated>
+  <updated>2013-07-18T22:31:34-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,160 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring User Registration to its Own Service Object]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object/"/>
+    <updated>2013-07-09T21:36:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object</id>
+    <content type="html"><![CDATA[<p>A quick look at the users_controller.rb shows that the create action is starting to look rather bloated. When I create a user theres several things that need to happen.</p>
+
+<!--more-->
+
+
+<ul>
+<li>Validate User info</li>
+<li>Validate Payment action to Stripe</li>
+<li>Save the User to the DB</li>
+<li>If an invitation token is present, handle following relationships</li>
+<li>Send out Welcome emails</li>
+<li>Handle errors for each validation check</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>/services/user_registration.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserRegistration</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:error_message</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">register_user</span><span class="p">(</span><span class="n">stripe_token</span><span class="p">,</span> <span class="n">invitation_token</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@user</span><span class="o">.</span><span class="n">valid?</span>
+</span><span class='line'>      <span class="n">charge</span> <span class="o">=</span> <span class="ss">StripeWrapper</span><span class="p">:</span><span class="ss">:Customer</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">card</span><span class="p">:</span> <span class="n">stripe_token</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">charge</span><span class="o">.</span><span class="n">success?</span>
+</span><span class='line'>        <span class="vi">@user</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>        <span class="n">handle_invitation</span><span class="p">(</span><span class="n">invitation_token</span><span class="p">)</span>
+</span><span class='line'>        <span class="no">AppMailer</span><span class="o">.</span><span class="n">delay</span><span class="o">.</span><span class="n">welcome_email</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
+</span><span class='line'>        <span class="vi">@status</span> <span class="o">=</span> <span class="ss">:success</span>
+</span><span class='line'>        <span class="nb">self</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="vi">@status</span> <span class="o">=</span> <span class="ss">:failed</span>
+</span><span class='line'>        <span class="vi">@error_message</span> <span class="o">=</span> <span class="n">charge</span><span class="o">.</span><span class="n">error_message</span>
+</span><span class='line'>        <span class="nb">self</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="vi">@status</span> <span class="o">=</span> <span class="ss">:failed</span>
+</span><span class='line'>      <span class="vi">@error_message</span> <span class="o">=</span> <span class="s2">&quot;Invalid user information. Please check the errors below&quot;</span>
+</span><span class='line'>      <span class="nb">self</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">successful?</span>
+</span><span class='line'>    <span class="vi">@status</span> <span class="o">==</span> <span class="ss">:success</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">handle_invitation</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>        <span class="n">invitation</span> <span class="o">=</span> <span class="no">Invite</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">token</span><span class="p">:</span> <span class="n">token</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>        <span class="vi">@user</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="n">invitation</span><span class="o">.</span><span class="n">inviter</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">invitation</span><span class="o">.</span><span class="n">inviter</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">invitation</span><span class="o">.</span><span class="n">update_column</span><span class="p">(</span><span class="ss">:token</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the controller is much simpler to debug and test. I have removed the dependency of the AppMailer, handling invitations and charging the customer.</p>
+
+<figure class='code'><figcaption><span>/controllers/users_controller.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">registration</span> <span class="o">=</span> <span class="no">UserRegistration</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span><span class="o">.</span><span class="n">register_user</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:stripeToken</span><span class="o">]</span><span class="p">,</span><span class="n">params</span><span class="o">[</span><span class="ss">:invite_token</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">registration</span><span class="o">.</span><span class="n">successful?</span>
+</span><span class='line'>      <span class="n">session</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>      <span class="n">flash</span><span class="o">[</span><span class="ss">:success</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;You are Signed in and your CC has been charged, an email has been sent to: </span><span class="si">#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">home_path</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="n">registration</span><span class="o">.</span><span class="n">error_message</span>
+</span><span class='line'>      <span class="n">render</span>  <span class="ss">:new</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The question that I have now, is knowing when to abstract logic into a lib or a service object.  This <a href="http://stackoverflow.com/questions/16159021/rails-service-objects-vs-lib-classes">post</a> on stackoverflow provides a good explaination.  It all boils down to how the logic is coupled to your domain models.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Refactoring to Simplify Domain Models]]></title>
@@ -1056,43 +1210,6 @@ environment, and your bootstrapped, QA roles are unfortunately rolled into the d
 <p>Through regression testing</p>
 
 <p><img class="center" src="https://s3-us-west-2.amazonaws.com/blog-assets-cache/images/test-in-production.jpg" title="most interesting man" alt="images"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using Ruby's Object#tap to easily seed your Rails project]]></title>
-    <link href="http://cachemoney.github.io/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project/"/>
-    <updated>2013-04-26T13:38:00-05:00</updated>
-    <id>http://cachemoney.github.io/blog/2013/04/26/using-rubys-object-number-tap-to-easily-seed-your-rails-project</id>
-    <content type="html"><![CDATA[<p>I initially saw a fellow rails student using the tap method to seed their project, in a couple of lines of code.  It got me to take a second look at tap and to understand how it works. <!-- more --></p>
-
-<h3>What is tap?</h3>
-
-<p><strong>tap</strong> is allows you to chain method calls. It can pass an object into a block and after completion it returns the object.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">user</span><span class="o">.</span><span class="n">tap</span>
-</span><span class='line'>  <span class="c1"># do some stuff</span>
-</span><span class='line'><span class="k">end</span> <span class="c1"># =&gt; user object</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Tap will return the object thats its called on, regardless if the block returns another result. So with this we can start adding users and pass the <code>User.create</code> into a users array.  I&rsquo;ll be using the Faker gem to populate db attributes.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">users</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span><span class="o">|</span><span class="n">ary</span><span class="o">|</span> <span class="n">ary</span> <span class="o">&lt;&lt;</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">full_name</span><span class="p">:</span> <span class="ss">Faker</span><span class="p">:</span><span class="ss">:Name</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="ss">Faker</span><span class="p">:</span><span class="ss">:Internet</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="ss">password</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span><span class="p">)}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, this will create 11 sample users into your db.</p>
 ]]></content>
   </entry>
   

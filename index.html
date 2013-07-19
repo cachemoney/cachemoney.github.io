@@ -9,7 +9,7 @@
   <meta name="author" content="Robin Paul">
 
   
-  <meta name="description" content="Tweet Refactoring to Simplify Domain Models Jul 2nd, 2013 Policy Objects Policy Objects can be used to encapsulate a business rule which involves &hellip;">
+  <meta name="description" content="Tweet Refactoring User Registration to Its Own Service Object Jul 9th, 2013 A quick look at the users_controller.rb shows that the create action is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,6 +110,59 @@
   </header>
   <section id="main">
       
+  
+  
+    <article class="post">
+      <div class="sharing-box">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/index.html" data-size="large">Tweet</a>
+  
+  
+  
+</div>
+
+      
+  <header>
+    
+      <h2 class="entry-title">
+        
+        <a href="/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object/">Refactoring User Registration to Its Own Service Object</a>
+        
+      </h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T21:36:00-05:00" pubdate data-updated="true">Jul 9<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <p>A quick look at the users_controller.rb shows that the create action is starting to look rather bloated. When I create a user theres several things that need to happen.</p>
+
+
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="post">
@@ -814,59 +867,6 @@ ActionMailer is dispatching an email to the Mail Deliveries queue, and in my dev
 <p>You can access a users followers with <code>@user.following_relationships</code> or they are following with <code>@user.leading_relationships</code></p>
 
   
-  
-
-
-    </article>
-  
-  
-    <article class="post">
-      <div class="sharing-box">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://cachemoney.github.io/index.html" data-via="pobinraul" data-counturl="http://cachemoney.github.io/index.html" data-size="large">Tweet</a>
-  
-  
-  
-</div>
-
-      
-  <header>
-    
-      <h2 class="entry-title">
-        
-        <a href="/blog/2013/05/29/3-styles-of-bdd-with-rails/">3 Styles of BDD With Rails</a>
-        
-      </h2>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-29T23:43:00-05:00" pubdate data-updated="true">May 29<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <p>So far, we&rsquo;ve been writing feature tests with capybara to test a particular business process which touches multiple controllers, models and views.  There are certain styles of approaching Behavioral Driven Design, a) Outside &ndash; In (ABDD), b) Inside &ndash; Out, and c) Meet in the Middle.</p>
-
-
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/05/29/3-styles-of-bdd-with-rails/">Read on &rarr;</a>
-    </footer>
   
 
 

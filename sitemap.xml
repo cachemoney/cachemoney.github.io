@@ -103,16 +103,22 @@
         <lastmod>2013-07-02T22:07:43-05:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://cachemoney.github.io/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object/
+        </loc>
+        <lastmod>2013-07-18T22:30:41-05:00</lastmod>
+    </url>
+    <url>
         <loc>http://cachemoney.github.io/about/</loc>
         <lastmod>2013-06-24T14:41:44-05:00</lastmod>
     </url>
     <url>
         <loc>http://cachemoney.github.io/blog/archives/</loc>
-        <lastmod>2013-07-02T22:07:43-05:00</lastmod>
+        <lastmod>2013-07-18T22:30:41-05:00</lastmod>
     </url>
     <url>
         <loc>http://cachemoney.github.io/</loc>
-        <lastmod>2013-07-02T22:07:43-05:00</lastmod>
+        <lastmod>2013-07-18T22:30:41-05:00</lastmod>
     </url>
     <url>
         <loc>http://cachemoney.github.io/robots.txt</loc>

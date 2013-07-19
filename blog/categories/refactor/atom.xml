@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Refactor | Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/blog/categories/refactor/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-07-02T22:08:21-05:00</updated>
+  <updated>2013-07-18T22:31:34-05:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -12,6 +12,183 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Refactoring User Registration to its Own Service Object]]></title>
+    <link href="http://cachemoney.github.io/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object/"/>
+    <updated>2013-07-09T21:36:00-05:00</updated>
+    <id>http://cachemoney.github.io/blog/2013/07/09/refactoring-user-registration-to-its-own-service-object</id>
+    <content type="html"><![CDATA[<p>A quick look at the users_controller.rb shows that the create action is starting to look rather bloated. When I create a user theres several things that need to happen.</p>
+
+<!--more-->
+
+
+<ul>
+<li>Validate User info</li>
+<li>Validate Payment action to Stripe</li>
+<li>Save the User to the DB</li>
+<li>If an invitation token is present, handle following relationships</li>
+<li>Send out Welcome emails</li>
+<li>Handle errors for each validation check</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/services/user_registration.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserRegistration</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  attr_reader :error_message&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@user = user</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">register_user</span><span class="p">(</span><span class="n">stripe_token</span><span class="p">,</span> <span class="n">invitation_token</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;if @user.valid?</span>
+</span><span class='line'><span class="sr">  charge = StripeWrapper::Customer.create(email: @user.email, card: stripe_token)</span>
+</span><span class='line'><span class="sr">  if charge.success?  </span>
+</span><span class='line'><span class="sr">    @user.save</span>
+</span><span class='line'><span class="sr">    handle_invitation(invitation_token)</span>
+</span><span class='line'><span class="sr">    AppMailer.delay.welcome_email(@user)</span>
+</span><span class='line'><span class="sr">    @status = :success</span>
+</span><span class='line'><span class="sr">    self</span>
+</span><span class='line'><span class="sr">  else</span>
+</span><span class='line'><span class="sr">    @status = :failed</span>
+</span><span class='line'><span class="sr">    @error_message = charge.error_message</span>
+</span><span class='line'><span class="sr">    self</span>
+</span><span class='line'><span class="sr">  end</span>
+</span><span class='line'><span class="sr">else</span>
+</span><span class='line'><span class="sr">  @status = :failed</span>
+</span><span class='line'><span class="sr">  @error_message = &quot;Invalid user information. Please check the errors below&quot;</span>
+</span><span class='line'><span class="sr">  self</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">successful?</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@status == :success</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">private</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;def handle_invitation(token)</span>
+</span><span class='line'><span class="sr">  if token.present?</span>
+</span><span class='line'><span class="sr">    invitation = Invite.where(token: token).first</span>
+</span><span class='line'><span class="sr">    @user.follow(invitation.inviter)</span>
+</span><span class='line'><span class="sr">    invitation.inviter.follow(@user)</span>
+</span><span class='line'><span class="sr">    invitation.update_column(:token, nil)</span>
+</span><span class='line'><span class="sr">  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now the controller is much simpler to debug and test. I have removed the dependency of the AppMailer, handling invitations and charging the customer.
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/controllers/users_controller.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@user = User.new(params[:user])</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">registration = UserRegistration.new(@user).register_user(params[:stripeToken],params[:invite_token])</span>
+</span><span class='line'><span class="sr">if registration.successful?</span>
+</span><span class='line'><span class="sr">  session[:user_id] = @user.id</span>
+</span><span class='line'><span class="sr">  flash[:success] = &quot;You are Signed in and your CC has been charged, an email has been sent to: </span><span class="si">#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">  redirect_to home_path</span>
+</span><span class='line'><span class="sr">else</span>
+</span><span class='line'><span class="sr">  flash[:error] = registration.error_message</span>
+</span><span class='line'><span class="sr">  render  :new</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The question that I have now, is knowing when to abstract logic into a lib or a service object.  This <a href="http://stackoverflow.com/questions/16159021/rails-service-objects-vs-lib-classes">post</a> on stackoverflow provides a good explaination.  It all boils down to how the logic is coupled to your domain models.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Refactoring to Simplify Domain Models]]></title>
