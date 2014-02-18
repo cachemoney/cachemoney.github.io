@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Refactor | Ruby on Rails, Online Marketing and Analytics]]></title>
   <link href="http://cachemoney.github.io/blog/categories/refactor/atom.xml" rel="self"/>
   <link href="http://cachemoney.github.io/"/>
-  <updated>2013-07-18T22:31:34-05:00</updated>
+  <updated>2014-02-17T20:11:26-06:00</updated>
   <id>http://cachemoney.github.io/</id>
   <author>
     <name><![CDATA[Robin Paul]]></name>
@@ -34,7 +34,7 @@
 
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/services/user_registration.rb </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -148,7 +148,7 @@
 
 <p>Now the controller is much simpler to debug and test. I have removed the dependency of the AppMailer, handling invitations and charging the customer.
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/controllers/users_controller.rb </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -226,7 +226,7 @@ end
 <p>Abstracting code from models or controllers to Service Objects is another way to refactor code in an application. In myFlix, I will refractor the User Signup process into an service object, that handles , charging the customer using my 1) custom Stripe API wrapper, 2) Saving the User to the database, 3) deploy welcome emails and 4) creating friendship creations if an invitation token is present. This can simplify the controller tests, as user registration unit tests can be targeted to the service object now.</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/services/user_registration.rb </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
